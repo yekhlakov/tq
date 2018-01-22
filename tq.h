@@ -24,7 +24,7 @@ class TQ
         class Task
         {
             public:
-                virtual void process () noexcept = 0;
+                virtual void operator() () noexcept = 0;
                 virtual ~Task () = 0;
         };
 
@@ -73,7 +73,7 @@ template<class A, class B> TQ::TQ (std::chrono::duration<A, B> timeout) : termin
                 if (task != nullptr)
                 {
                     lock.unlock ();
-                    task->process ();
+                    (*task) ();
                     delete task;
                     lock.lock ();
                 }

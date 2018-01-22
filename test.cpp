@@ -11,7 +11,7 @@ class MyTask : public maxy::TQ::Task
     int x;
     int timeout;
     public:
-        void process () noexcept
+        void operator() () noexcept
         {
             if (timeout <= 0)
             {
