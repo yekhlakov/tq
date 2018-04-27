@@ -4,9 +4,9 @@
 /**
  * Test implementation of a task
  * The processing function sleeps for a given timeout in order to simulate long processing time
- * Not that the queue accepts any task built on top of TQTask
+ * Not that the queue accepts any task built on top of tq::task
  */
-class MyTask : public maxy::TQ::Task
+class MyTask : public maxy::tq::task
 {
     int x;
     int timeout;
@@ -44,7 +44,7 @@ void tick ()
  */
 int main()
 {
-    maxy::TQ q {std::chrono::milliseconds (50)};
+    maxy::tq q {std::chrono::milliseconds (50)};
 
     q.post (new MyTask {1, 100});
     tick ();
