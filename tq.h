@@ -64,6 +64,7 @@ namespace maxy
 				catch (...)
 				{
 					mutex.unlock ();
+					cv.notify_all ();
 					throw;
 				}
 				mutex.unlock ();
@@ -85,7 +86,13 @@ namespace maxy
 					queue.pop ();
 				}
 				mutex.unlock ();
+				cv.notify_all ();
 			}
+
+			/**
+			 * Get number of pending tasks
+			 */
+			size_t size () { return queue.size (); }
 
 		private:
 			std::thread thread;
