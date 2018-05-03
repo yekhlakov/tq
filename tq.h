@@ -1,3 +1,4 @@
+#pragma once
 #ifndef MAXY_tq_INCLUDE
 #define MAXY_tq_INCLUDE
 
@@ -79,6 +80,8 @@ namespace maxy
 			*/
 			void purge ()
 			{
+				if (terminated) return;
+
 				mutex.lock ();
 				while (queue.size ())
 				{
@@ -89,17 +92,19 @@ namespace maxy
 				cv.notify_all ();
 			}
 
-			/**
-			 * Get number of pending tasks
-			 */
-			size_t size () { return queue.size (); }
+			// Get number of pending tasks
+			size_t size () { return terminated ? 0 : queue.size (); }
+
+			// Terminate the queue
+			void terminate () { terminated = true; }
+
 
 		private:
 			std::thread thread;
 			std::mutex mutex;
 			std::condition_variable cv;
 			std::queue<task*> queue;
-			bool terminated;
+			volatile bool terminated;
 	};
 
 	/**
